@@ -23,6 +23,7 @@ const DashboardSidesheet = () => {
           </span>
         );
       })}
+      <span>Works</span>
     </div>
   );
 };
