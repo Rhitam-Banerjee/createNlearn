@@ -23,7 +23,7 @@ const DashboardMain = () => {
   }, [activePage]);
 
   return (
-    <div className="ml-[200px] w-full h-full p-[50px] pt-[20px]">
+    <div className="ml-[200px] w-full h-full p-[50px] pt-[0px]">
       {activePage === "Dashboard" ? (
         <DashboardDetails />
       ) : activePage === "Past Class" ? (

@@ -1,18 +1,55 @@
 /* eslint-disable react/prop-types */
-import { Link } from "react-router-dom";
 import { Logo } from "../assets";
+import axios from "axios";
+import urls from "../utils/urls";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllClasses, setOngoingClasses } from "../reducers/detailSlice";
+import { useEffect } from "react";
 const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
+  const { admin } = useSelector((store) => store.admin);
+  const { id } = admin;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const getOngoingingClass = async () => {
+    const response = await axios
+      .get(`${urls.getClasses}?teacher_id=${id}&class_type=ongoing`)
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+    if (response && response.status) {
+      dispatch(setOngoingClasses(response.classes));
+    }
+  };
+  const getUpcommingClass = async () => {
+    const response = await axios
+      .get(`${urls.getClasses}?teacher_id=${id}&class_type=upcomming`)
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+    if (response && response.status) {
+      dispatch(setAllClasses(response.classes));
+    }
+  };
+  useEffect(() => {
+    getOngoingingClass();
+    getUpcommingClass();
+  }, []);
+  const setClassMark = async (class_id, marker = "start") => {
+    try {
+      const response = await axios
+        .post(`${urls.markClass}?class_id=${class_id}&mark_type=${marker}`)
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+      if (response && response.status) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="mt-[50px] flex flex-col gap-[10px]">
       <span className="text-[20px] font-bold pb-[10px]">{header}</span>
-      {header === "Upcomming Classes" && (
-        <Link
-          to={"/create-class"}
-          className="py-2 px-3 bg-mainColor font-semibold !text-white w-max rounded-[5px] cursor-pointer"
-        >
-          Schedule Extra Class/PTM
-        </Link>
-      )}
       <div className="grid grid-cols-3 gap-4 text-[12px] font-semibold">
         {classes.map((singleClass, index) => {
           return (
@@ -20,38 +57,29 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
               key={index}
               className="p-4 flex flex-col justify-start items-start gap-[10px] bg-lightGrey rounded-[5px] shadow-2xl"
             >
+              <div>
+                Class ID - <span>{singleClass.classId}</span>
+              </div>
               <div className="flex flex-row items-center gap-[15px]">
                 <div>
                   <img src={Logo} className="w-[30px]" alt="" />
                 </div>
                 <div className="flex flex-col">
                   <span>{singleClass.title}</span>
-                  <span>{singleClass.course}</span>
                 </div>
               </div>
-              <span>{singleClass.time}</span>
-              <span>{singleClass.date}</span>
+              <span>Date - {singleClass.date}</span>
+              <span>
+                Time - {singleClass.class_start?.slice(0, -3)} -{" "}
+                {singleClass.class_end?.slice(0, -3)}
+              </span>
               <span>
                 No of students
                 <span className="pl-[10px] text-mainColor font-semibold text-[15px]">
                   {singleClass.studentCount}
                 </span>
               </span>
-              <div className="flex flex-row items-center gap-[10px]">
-                <span>Tags</span>
-                <div className="flex flex-row flex-wrap gap-[10px]">
-                  {singleClass.tags.map((tags, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="bg-mainColor text-white px-2 py-1 rounded-[5px]"
-                      >
-                        {tags}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+
               <div className="flex flex-row flex-wrap gap-[10px]">
                 {singleClass.studentName.map((student, index) => {
                   return (
@@ -64,13 +92,19 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
                   );
                 })}
               </div>
-              {header === "Past Classes" && (
-                <div className="text-white bg-secondary px-4 py-2 rounded-[5px] cursor-pointer">
-                  RATE CLASS
+              {header === "Ongoing Classes" && (
+                <div
+                  className="text-white bg-secondary px-4 py-2 rounded-[5px] cursor-pointer"
+                  onClick={() => setClassMark(singleClass.id, "end")}
+                >
+                  END CLASS
                 </div>
               )}
               {header === "Upcomming Classes" && (
-                <div className="text-white bg-successGreen px-4 py-2 rounded-[5px] cursor-pointer">
+                <div
+                  className="text-white bg-successGreen px-4 py-2 rounded-[5px] cursor-pointer"
+                  onClick={() => setClassMark(singleClass.id, "start")}
+                >
                   START CLASS
                 </div>
               )}

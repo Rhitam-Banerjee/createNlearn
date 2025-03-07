@@ -39,9 +39,9 @@ const CalendarView = ({ allClasses = [] }) => {
             );
           })}
         </div>
-        <div className="ml-6 px-4 py-2 font-bold bg-mainColor w-max rounded-[5px] text-white cursor-pointer">
+        {/* <div className="ml-6 px-4 py-2 font-bold bg-mainColor w-max rounded-[5px] text-white cursor-pointer">
           ADD MY HOURS
-        </div>
+        </div> */}
       </div>
       <div className="w-full p-6 ">
         <Fullcalendar

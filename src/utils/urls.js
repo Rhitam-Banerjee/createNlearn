@@ -8,6 +8,7 @@ const urls = {
   getAllTeachers: `${subDomain}/get-all-teachers`,
   getClasses: `${subDomain}/get-classes`,
   getCourses: `${subDomain}/get-courses`,
+  markClass: `${subDomain}/mark-class`,
   createNewClass: `${subDomain}/create-new-classes`,
   createExistingClass: `${subDomain}/create-existing-classes`,
 };
