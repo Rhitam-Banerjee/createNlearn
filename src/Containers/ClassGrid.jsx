@@ -3,7 +3,11 @@ import { Logo } from "../assets";
 import axios from "axios";
 import urls from "../utils/urls";
 import { useDispatch, useSelector } from "react-redux";
-import { setOngoingClasses, setPastClasses } from "../reducers/detailSlice";
+import {
+  setOngoingClasses,
+  setPastClasses,
+  setUpcommingClasses,
+} from "../reducers/detailSlice";
 const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
   const { admin } = useSelector((store) => store.admin);
   const { id } = admin;
@@ -16,6 +20,15 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
       .catch((err) => console.log(err));
     if (response && response.status) {
       dispatch(setOngoingClasses(response.classes));
+    }
+  };
+  const getUpcommingClass = async () => {
+    const response = await axios
+      .get(`${urls.getClasses}?teacher_id=${id}&class_type=upcomming`)
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+    if (response && response.status) {
+      dispatch(setUpcommingClasses(response.classes));
     }
   };
   const getPastClasses = async () => {
@@ -34,6 +47,7 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
         .then((res) => res.data)
         .catch((err) => console.log(err));
       if (response && response.status) {
+        getUpcommingClass();
         getOngoingingClass();
         getPastClasses();
       }
