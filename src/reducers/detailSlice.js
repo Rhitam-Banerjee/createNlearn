@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   allClasses: [],
   ongoingClasses: [],
+  upcommingClasses: [],
+  pastClasses: [],
   allCourses: [],
 };
 export const detailSlice = createSlice({
@@ -17,6 +19,12 @@ export const detailSlice = createSlice({
     setOngoingClasses: (state, { payload }) => {
       state.ongoingClasses = payload;
     },
+    setUpcommingClasses: (state, { payload }) => {
+      state.upcommingClasses = payload;
+    },
+    setPastClasses: (state, { payload }) => {
+      state.pastClasses = payload;
+    },
     setAllCourses: (state, { payload }) => {
       state.allCourses = payload;
     },
@@ -26,6 +34,8 @@ export const {
   setAllTeachers,
   setAllClasses,
   setOngoingClasses,
+  setUpcommingClasses,
+  setPastClasses,
   setAllCourses,
 } = detailSlice.actions;
 export default detailSlice.reducer;

@@ -7,6 +7,7 @@ import ClassGrid from "./ClassGrid";
 import CalendarView from "./CalendarView";
 import NewClass from "./NewClass";
 import ExistingClass from "./ExistingClass";
+import ClassFeedbackForm from "./ClassFeedbackForm";
 export {
   DashboardSidesheet,
   DashboardMain,
@@ -17,4 +18,5 @@ export {
   CalendarView,
   NewClass,
   ExistingClass,
+  ClassFeedbackForm,
 };

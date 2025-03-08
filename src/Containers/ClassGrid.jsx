@@ -2,14 +2,11 @@
 import { Logo } from "../assets";
 import axios from "axios";
 import urls from "../utils/urls";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllClasses, setOngoingClasses } from "../reducers/detailSlice";
-import { useEffect } from "react";
+import { setOngoingClasses, setPastClasses } from "../reducers/detailSlice";
 const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
   const { admin } = useSelector((store) => store.admin);
   const { id } = admin;
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getOngoingingClass = async () => {
@@ -21,19 +18,15 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
       dispatch(setOngoingClasses(response.classes));
     }
   };
-  const getUpcommingClass = async () => {
+  const getPastClasses = async () => {
     const response = await axios
-      .get(`${urls.getClasses}?teacher_id=${id}&class_type=upcomming`)
+      .get(`${urls.getClasses}?teacher_id=${id}&class_type=past`)
       .then((res) => res.data)
       .catch((err) => console.log(err));
     if (response && response.status) {
-      dispatch(setAllClasses(response.classes));
+      dispatch(setPastClasses(response.classes));
     }
   };
-  useEffect(() => {
-    getOngoingingClass();
-    getUpcommingClass();
-  }, []);
   const setClassMark = async (class_id, marker = "start") => {
     try {
       const response = await axios
@@ -41,12 +34,18 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
         .then((res) => res.data)
         .catch((err) => console.log(err));
       if (response && response.status) {
-        navigate("/");
+        getOngoingingClass();
+        getPastClasses();
       }
     } catch (error) {
       console.log(error);
     }
   };
+  // useEffect(() => {
+  //   getOngoingingClass();
+  //   getUpcommingClass();
+  // }, []);
+
   return (
     <div className="mt-[50px] flex flex-col gap-[10px]">
       <span className="text-[20px] font-bold pb-[10px]">{header}</span>
