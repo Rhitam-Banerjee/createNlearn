@@ -8,10 +8,12 @@ import {
   setPastClasses,
   setUpcommingClasses,
 } from "../reducers/detailSlice";
+import { useNavigate } from "react-router-dom";
 const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
   const { admin } = useSelector((store) => store.admin);
   const { id } = admin;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getOngoingingClass = async () => {
     const response = await axios
@@ -41,19 +43,25 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
     }
   };
   const setClassMark = async (class_id, marker = "start") => {
-    try {
-      const response = await axios
-        .post(`${urls.markClass}?class_id=${class_id}&mark_type=${marker}`)
-        .then((res) => res.data)
-        .catch((err) => console.log(err));
-      if (response && response.status) {
-        getUpcommingClass();
-        getOngoingingClass();
-        getPastClasses();
-      }
-    } catch (error) {
-      console.log(error);
+    if (marker === "end") {
+      navigate(`/feedback/${class_id}`);
     }
+    // try {
+    //   const response = await axios
+    //     .post(`${urls.markClass}?class_id=${class_id}&mark_type=${marker}`)
+    //     .then((res) => res.data)
+    //     .catch((err) => console.log(err));
+    //   if (response && response.status) {
+    //     getUpcommingClass();
+    //     getOngoingingClass();
+    //     getPastClasses();
+    //     if (marker === "end") {
+    //       navigate(`/feedback/${class_id}`);
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   // useEffect(() => {
   //   getOngoingingClass();

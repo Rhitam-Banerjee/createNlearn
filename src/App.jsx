@@ -14,7 +14,12 @@ const App = () => {
         ></Route>
         <Route path="/create-class" element={<CreateClass />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/feedback/:id" element={<ClassFeedbackForm />} />
+        <Route
+          path="/feedback/:classId"
+          element={
+            isLoggedIn ? <ClassFeedbackForm /> : <Navigate to="/login" />
+          }
+        />
       </Routes>
     </>
   );
