@@ -8,7 +8,7 @@ import {
   setPastClasses,
   setUpcommingClasses,
 } from "../reducers/detailSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
   const { admin } = useSelector((store) => store.admin);
   const { id } = admin;
@@ -113,12 +113,20 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
                   );
                 })}
               </div>
+              {header === "Past Classes" && (
+                <Link
+                  to={`/feedback/${singleClass.id}`}
+                  className="!text-white bg-successGreen px-4 py-2 rounded-[5px] cursor-pointer"
+                >
+                  View Form
+                </Link>
+              )}
               {header === "Ongoing Classes" && (
                 <div
                   className="text-white bg-secondary px-4 py-2 rounded-[5px] cursor-pointer"
                   onClick={() => setClassMark(singleClass.id, "end")}
                 >
-                  END CLASS
+                  End Class
                 </div>
               )}
               {header === "Upcomming Classes" && (
@@ -126,7 +134,7 @@ const ClassGrid = ({ header = "Upcomming Classes", classes = [] }) => {
                   className="text-white bg-successGreen px-4 py-2 rounded-[5px] cursor-pointer"
                   onClick={() => setClassMark(singleClass.id, "start")}
                 >
-                  START CLASS
+                  Start Class
                 </div>
               )}
             </div>
