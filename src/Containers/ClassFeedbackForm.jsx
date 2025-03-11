@@ -122,9 +122,14 @@ const ClassFeedbackForm = () => {
   return (
     <section className="mt-[100px] p-[50px]">
       {formValues.submited_form_date && (
-        <span className="text-secondary font-bold text-[15px]">
-          Form Submited on {formValues.submited_form_date}
-        </span>
+        <div className="text-secondary font-bold text-[15px] mb-[20px]">
+          Form Submited on
+          <span className="ml-[20px]">
+            {new Date(formValues.submited_form_date).toLocaleString("en-IN", {
+              timeZone: "Asia/Kolkata",
+            })}
+          </span>
+        </div>
       )}
       <form
         className="text-[15px] bg-unHighlight p-[20px] rounded-[5px] flex flex-col justify-start items-start gap-[20px]"
