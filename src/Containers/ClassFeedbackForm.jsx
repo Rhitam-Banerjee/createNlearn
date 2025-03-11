@@ -18,6 +18,7 @@ const ClassFeedbackForm = () => {
     attendence: false,
   });
   const [formValues, setFormValues] = useState({
+    submited_form_date: "",
     class_id: classId,
     teacher_id: id,
     teacher_name: name,
@@ -41,6 +42,7 @@ const ClassFeedbackForm = () => {
         .catch((err) => console.log(err));
       if (response && response.status) {
         const {
+          submited_form_date,
           class_id,
           teacher_id,
           teacher_name,
@@ -56,6 +58,7 @@ const ClassFeedbackForm = () => {
         } = response.class;
         setFormValues({
           ...formValues,
+          submited_form_date: submited_form_date,
           class_id: class_id,
           teacher_id: teacher_id,
           teacher_name: teacher_name,
@@ -91,6 +94,7 @@ const ClassFeedbackForm = () => {
         .catch((err) => console.log(err));
       if (response && response.status) {
         setFormValues({
+          submited_form_date: "",
           class_id: classId,
           teacher_id: id,
           teacher_name: name,
@@ -117,6 +121,11 @@ const ClassFeedbackForm = () => {
 
   return (
     <section className="mt-[100px] p-[50px]">
+      {formValues.submited_form_date && (
+        <span className="text-secondary font-bold text-[15px]">
+          Form Submited on {formValues.submited_form_date}
+        </span>
+      )}
       <form
         className="text-[15px] bg-unHighlight p-[20px] rounded-[5px] flex flex-col justify-start items-start gap-[20px]"
         onSubmit={(e) => {
